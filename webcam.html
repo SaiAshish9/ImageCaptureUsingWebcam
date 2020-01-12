@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+
+<div class="video-wrap">
+<!-- playsinline autoplay -- starts automatically -->
+<video id="video" playsinline autoplay></video>
+</div>
+
+
+<div class="controller">
+<button id="snap">
+  Capture
+</button>
+</div>
+
+<span id="Error">
+
+</span>
+
+<canvas id="canvas" width="640" height="480">
+
+</canvas>
+
+<script>
+
+'use script'
+
+const video=document.getElementById('video')
+const canvas=document.getElementById('canvas')
+const snap=document.getElementById('snap')
+const errorMsgElement=document.getElementById('span#Error')
+
+const constraints={
+  audio:true,
+  video:{
+    width:1280,
+    height:720
+  }
+}
+
+async function init(){
+  try{
+    const stream=await navigator.mediaDevices.getUserMedia(constraints)
+    handleSuccess(stream)
+  }catch(e){
+    errorMsgElement.innerHTML=`navigator.getUserMedia.error:${e.toString()}`
+  }
+}
+
+function handleSuccess(stream){
+  window.stream=stream,
+  video.srcObject=stream
+}
+
+init()
+
+var context=canvas.getContext('2d')
+
+snap.addEventListener("click",function(){
+  context.drawImage(video,0,0,640,480)
+})
+
+</script>
+
+
+</body>
+</html>
